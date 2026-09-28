@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LUMINARA · 轻运动，高质感</title>
+<meta name="description" content="Luminara，北美风格轻奢运动服饰品牌，2025 年诞生于杭州。融合北美简约运动美学与东方剪裁工艺，打造兼具功能性与高级感的轻奢运动单品。" />
+<link rel="preconnect" href="https://miaoda.feishu.cn" />
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" />
+<style>
+  :root{
+    --bg:#0c0d0c;
+    --bg-2:#111211;
+    --bg-3:#161715;
+    --line:rgba(233,227,212,.12);
+    --line-2:rgba(233,227,212,.06);
+    --ink:#ece8dd;
+    --ink-dim:#b6b1a4;
+    --muted:#8a867b;
+    --bronze:#c8a776;
+    --bronze-soft:rgba(200,167,118,.14);
+    --radius:18px;
+    --serif:"Noto Serif SC", "Songti SC", "SimSun", serif;
+    --sans:"Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --nav-h:78px;
+    --wrap:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:300;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--bronze);color:#0c0d0c}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  button{font-family:inherit;cursor:pointer}
+  .wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 28px}
+  .latin{font-family:var(--serif);letter-spacing:.04em}
+
+  /* ===== signature light glow ===== */
+  .glow{
+    position:absolute;pointer-events:none;border-radius:50%;
+    background:radial-gradient(circle, rgba(200,167,118,.16) 0%, rgba(200,167,118,.04) 40%, transparent 68%);
+    filter:blur(2px);
+  }
+
+  /* ===== nav ===== */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    height:var(--nav-h);
+    background:rgba(12,13,12,.72);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line-2);
+  }
+  .nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-family:var(--serif);font-weight:600;font-size:21px;letter-spacing:.34em;display:flex;align-items:center}
+  .brand .dot{color:var(--bronze);margin:0 2px}
+  .nav-links{display:flex;gap:6px;align-items:center}
+  .nav-links a{
+    position:relative;padding:9px 15px;font-size:14px;color:var(--ink-dim);
+    transition:color .25s;letter-spacing:.06em;
+  }
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a.active{color:var(--ink)}
+  .nav-links a.active::after{
+    content:"";position:absolute;left:15px;right:15px;bottom:4px;height:1px;background:var(--bronze);
+  }
+  .nav-cta{
+    border:1px solid var(--line);color:var(--ink);padding:9px 18px;font-size:13px;letter-spacing:.1em;
+    border-radius:999px;transition:all .25s;background:transparent;
+  }
+  .nav-cta:hover{border-color:var(--bronze);color:var(--bronze)}
+  .burger{display:none;background:none;border:none;width:40px;height:40px;flex-direction:column;gap:6px;justify-content:center;align-items:center}
+  .burger span{width:22px;height:1.6px;background:var(--ink);transition:all .3s}
+  .burger.open span:nth-child(1){transform:translateY(7.6px) rotate(45deg)}
+  .burger.open span:nth-child(2){transform:rotate(-45deg)}
+
+  /* ===== mobile menu ===== */
+  .mobile-menu{
+    position:fixed;top:var(--nav-h);left:0;right:0;z-index:99;
+    background:rgba(12,13,12,.96);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--line);padding:10px 24px 22px;
+    transform:translateY(-14px);opacity:0;pointer-events:none;transition:all .3s;
+  }
+  .mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:auto}
+  .mobile-menu a{display:block;padding:15px 4px;font-size:17px;letter-spacing:.1em;border-bottom:1px solid var(--line-2);color:var(--ink-dim)}
+  .mobile-menu a.active{color:var(--ink)}
+  .mobile-menu a:last-child{border-bottom:none}
+
+  /* ===== layout base ===== */
+  main{min-height:100vh}
+  .view{display:none}
+  .view.active{display:block}
+  .container{padding:calc(var(--nav-h) + 30px) 0 90px}
+  .eyebrow{
+    font-size:12px;letter-spacing:.42em;color:var(--bronze);text-transform:uppercase;
+    display:flex;align-items:center;gap:16px;
+  }
+  .eyebrow::before{content:"";width:38px;height:1px;background:var(--bronze)}
+  .sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.2vw,46px);line-height:1.25;letter-spacing:.02em}
+  .sec-sub{color:var(--muted);margin-top:18px;max-width:640px}
+  .lead{font-family:var(--serif);color:var(--ink);font-weight:400}
+  .center{text-align:center}
+  .center .eyebrow{justify-content:center}
+  .center .eyebrow::after{content:"";width:38px;height:1px;background:var(--bronze)}
+
+  /* ===== home hero ===== */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:0}
+  .hero-bg video{width:100%;height:100%;object-fit:cover;object-position:center}
+  .hero-bg::after{content:"";position:absolute;inset:0;background:
+      linear-gradient(90deg, rgba(12,13,12,.92) 0%, rgba(12,13,12,.74) 42%, rgba(12,13,12,.30) 100%),
+      linear-gradient(0deg, rgba(12,13,12,.85) 0%, rgba(12,13,12,.05) 55%);}
+  .hero-inner{position:relative;z-index:2;padding:calc(var(--nav-h) + 40px) 0 80px}
+  .hero-kicker{font-size:12px;letter-spacing:.5em;color:var(--bronze);text-transform:uppercase;margin-bottom:26px}
+  .hero-title{
+    font-family:var(--serif);font-weight:600;line-height:.98;
+    font-size:clamp(60px,12vw,150px);letter-spacing:.06em;color:var(--ink);
+  }
+  .hero-title .accent{color:var(--bronze)}
+  .hero-tag{font-size:clamp(18px,2.6vw,26px);color:var(--ink-dim);letter-spacing:.42em;margin-top:26px;font-weight:300}
+  .hero-tag b{font-weight:400;color:var(--ink)}
+  .hero-desc{max-width:520px;color:var(--ink-dim);margin-top:30px;font-size:15px}
+  .hero-actions{display:flex;gap:14px;margin-top:42px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    padding:14px 30px;font-size:14px;letter-spacing:.14em;border-radius:999px;
+    transition:all .28s;border:1px solid transparent;
+  }
+  .btn-solid{background:var(--bronze);color:#0c0d0c;font-weight:500}
+  .btn-solid:hover{background:var(--ink);transform:translateY(-2px)}
+  .btn-ghost{border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--bronze);color:var(--bronze)}
+  .hero-meta{display:flex;gap:40px;margin-top:56px;border-top:1px solid var(--line);padding-top:22px;flex-wrap:wrap}
+  .hero-meta .m b{display:block;font-family:var(--serif);font-size:22px;color:var(--ink);font-weight:500}
+  .hero-meta .m span{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+
+  /* ===== manifesto ===== */
+  .manifesto{padding:110px 0;position:relative;overflow:hidden}
+  .manifesto .glow{top:-120px;right:-120px;width:480px;height:480px}
+  .manifesto-quote{
+    font-family:var(--serif);font-weight:500;font-size:clamp(22px,3.4vw,38px);
+    line-height:1.6;letter-spacing:.02em;max-width:920px;color:var(--ink);
+  }
+  .manifesto-quote em{font-style:normal;color:var(--bronze)}
+  .manifesto-body{color:var(--muted);max-width:760px;margin-top:34px;font-size:15px}
+
+  /* ===== categories ===== */
+  .section{padding:96px 0}
+  .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:54px;flex-wrap:wrap}
+  .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .cat-card{
+    display:flex;flex-direction:column;overflow:hidden;border-radius:var(--radius);
+    background:var(--bg-3);border:1px solid var(--line-2);transition:border-color .3s;
+  }
+  .cat-card:hover{border-color:var(--line)}
+  .cat-img{
+    position:relative;aspect-ratio:3/4;overflow:hidden;
+    background:#2a2a2a;display:flex;align-items:center;justify-content:center;
+  }
+  .cat-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+  .cat-card:hover .cat-img img{transform:scale(1.05)}
+  .cat-card.zoom3 .cat-img img{transform:scale(1.30)}
+  .cat-card.zoom3:hover .cat-img img{transform:scale(1.36)}
+  .cat-body{padding:20px 18px 22px;text-align:center;border-top:1px solid var(--line-2)}
+  .cat-body h3{font-family:var(--serif);font-weight:500;font-size:19px;letter-spacing:.06em}
+  .cat-body h3.duo{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .cat-body h3.duo .en{font-size:12px;color:var(--bronze);letter-spacing:.18em;font-weight:500;text-transform:uppercase}
+  .cat-body h3.duo .zh{font-size:17px;letter-spacing:.04em}
+  .cat-body p{font-size:13px;color:var(--ink-dim);margin-top:8px;letter-spacing:.04em}
+
+  /* ===== pillars ===== */
+  .pillars{background:var(--bg-2);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  .pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2)}
+  .pillar{background:var(--bg-2);padding:46px 38px}
+  .pillar .ico{width:34px;height:34px;color:var(--bronze);margin-bottom:22px}
+  .pillar h4{font-family:var(--serif);font-weight:500;font-size:19px;letter-spacing:.05em;margin-bottom:14px}
+  .pillar p{color:var(--muted);font-size:14px}
+  .pillar .tag{display:inline-block;margin-top:18px;font-size:12px;letter-spacing:.18em;color:var(--ink-dim);border:1px solid var(--line);border-radius:999px;padding:5px 14px}
+
+  /* ===== scenes ===== */
+  .scene-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .scene{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line-2);background:#2a2a2a}
+  .scene img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+  .scene:hover img{transform:scale(1.05)}
+  .scene .lab{position:absolute;left:22px;bottom:20px;font-size:13px;letter-spacing:.22em;color:var(--ink);text-shadow:0 1px 12px rgba(0,0,0,.6)}
+
+  /* ===== about ===== */
+  .about-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;align-items:center}
+  .about-visual{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line-2)}
+  .about-visual img{width:100%;height:100%;object-fit:cover}
+  .about-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg, rgba(12,13,12,.35), transparent 40%)}
+  .about .eyebrow{margin-bottom:26px}
+  .about p{color:var(--ink-dim);font-size:15px;margin-top:20px}
+  .about .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:44px;border:1px solid var(--line)}
+  .fact{background:var(--bg);padding:24px}
+  .fact b{display:block;font-family:var(--serif);font-size:26px;color:var(--bronze);font-weight:500}
+  .fact span{font-size:12px;color:var(--muted);letter-spacing:.12em}
+
+  /* ===== products ===== */
+  .prod-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:42px}
+  .filter{
+    background:transparent;border:1px solid var(--line);color:var(--ink-dim);
+    padding:8px 18px;font-size:13px;letter-spacing:.1em;border-radius:999px;transition:all .25s;
+  }
+  .filter:hover{color:var(--ink);border-color:var(--line-2)}
+  .filter.active{background:var(--bronze);border-color:var(--bronze);color:#0c0d0c;font-weight:500}
+  .prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px}
+  .prod{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px;align-items:center;border:1px solid var(--line-2);border-radius:var(--radius);background:var(--bg-2);overflow:hidden}
+  .prod .shot{position:relative;aspect-ratio:1/1;overflow:hidden}
+  .prod .shot img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+  .prod:hover .shot img{transform:scale(1.05)}
+  .prod .info{padding:18px 18px 18px 0}
+  .prod .cat{font-size:11px;letter-spacing:.3em;color:var(--bronze);text-transform:uppercase;margin-bottom:10px}
+  .prod h3{font-family:var(--serif);font-weight:500;font-size:23px;letter-spacing:.03em}
+  .prod p{color:var(--muted);font-size:14px;margin:14px 0 18px}
+  .prod .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .prod .tag{font-size:11px;letter-spacing:.1em;color:var(--ink-dim);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+  .prod .price{font-family:var(--serif);color:var(--ink);font-size:18px;margin-top:20px}
+  .prod .price em{font-style:normal;color:var(--muted);font-size:13px;margin-left:8px}
+
+  /* ===== contact ===== */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  .contact-item{display:flex;gap:20px;padding:26px 0;border-bottom:1px solid var(--line-2)}
+  .contact-item .ci{flex-shrink:0;width:46px;height:46px;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--bronze)}
+  .contact-item .ci svg{width:21px;height:21px}
+  .contact-item h4{font-family:var(--serif);font-weight:500;font-size:16px;letter-spacing:.05em}
+  .contact-item p{color:var(--muted);font-size:14px;margin-top:5px}
+  .contact-item a{color:var(--ink-dim);transition:color .25s}
+  .contact-item a:hover{color:var(--bronze)}
+  .form-card{background:var(--bg-2);border:1px solid var(--line-2);border-radius:var(--radius);padding:38px}
+  .form-card h3{font-family:var(--serif);font-weight:500;font-size:24px;letter-spacing:.03em;margin-bottom:6px}
+  .form-card .note{color:var(--muted);font-size:13px;margin-bottom:28px}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:12px;letter-spacing:.18em;color:var(--ink-dim);margin-bottom:8px;text-transform:uppercase}
+  .field input,.field textarea,.field select{
+    width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);
+    padding:13px 16px;font-family:inherit;font-size:14px;border-radius:10px;transition:border-color .25s;outline:none;
+  }
+  .field input:focus,.field textarea:focus{border-color:var(--bronze)}
+  .field textarea{min-height:120px;resize:vertical}
+  .submit{width:100%;margin-top:6px}
+  .form-note{font-size:12px;color:var(--muted);margin-top:16px;text-align:center}
+
+  /* ===== footer ===== */
+  footer{border-top:1px solid var(--line-2);padding:56px 0 40px;background:var(--bg-2)}
+  .foot{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+  .foot .fbrand{font-family:var(--serif);font-size:24px;letter-spacing:.3em;color:var(--ink)}
+  .foot .fdesc{color:var(--muted);font-size:13px;max-width:380px;margin-top:16px}
+  .foot-cols{display:flex;gap:64px;flex-wrap:wrap}
+  .foot-col h5{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .foot-col a{display:block;color:var(--ink-dim);font-size:14px;padding:6px 0;transition:color .25s}
+  .foot-col a:hover{color:var(--bronze)}
+  .foot-bottom{margin-top:48px;padding-top:22px;border-top:1px solid var(--line-2);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .foot-bottom p{color:var(--muted);font-size:12px}
+  .social{display:flex;gap:12px}
+  .social a{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink-dim);transition:all .25s}
+  .social a:hover{border-color:var(--bronze);color:var(--bronze);transform:translateY(-2px)}
+  .social svg{width:17px;height:17px}
+
+  /* ===== toast ===== */
+  .toast{
+    position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#0c0d0c;padding:13px 26px;border-radius:999px;
+    font-size:14px;opacity:0;pointer-events:none;transition:all .35s;z-index:200;box-shadow:0 12px 40px rgba(0,0,0,.4);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ===== responsive ===== */
+  @media (max-width:960px){
+    .nav-links{display:none}
+    .burger{display:flex}
+    .nav-cta{display:none}
+    .cat-grid{grid-template-columns:repeat(2,1fr)}
+    .pillar-grid{grid-template-columns:1fr}
+    .about-grid{grid-template-columns:1fr;gap:40px}
+    .scene-grid{grid-template-columns:1fr}
+    .prod-grid{grid-template-columns:1fr}
+    .contact-grid{grid-template-columns:1fr;gap:48px}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 20px}
+    .cat-grid{grid-template-columns:1fr 1fr;gap:14px}
+    .cat-card .meta p{display:none}
+    .section-head{gap:16px}
+    .hero-meta{gap:22px}
+    .foot-cols{gap:36px}
+    .hero-title{font-size:clamp(52px,18vw,80px)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#home" class="brand" data-nav>LUMI<span class="dot">N</span>ARA</a>
+    <nav class="nav-links">
+      <a href="#home" data-link="home">首页</a>
+      <a href="#about" data-link="about">关于我们</a>
+      <a href="#products" data-link="products">产品展示</a>
+      <a href="#contact" data-link="contact">联系我们</a>
+    </nav>
+    <a href="#products" class="nav-cta" data-nav>探索系列</a>
+    <button class="burger" id="burger" aria-label="菜单"><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ===== MOBILE MENU ===== -->
+<nav class="mobile-menu" id="mobileMenu">
+  <a href="#home" data-link="home">首页</a>
+  <a href="#about" data-link="about">关于我们</a>
+  <a href="#products" data-link="products">产品展示</a>
+  <a href="#contact" data-link="contact">联系我们</a>
+</nav>
+
+<main>
+<!-- ================= 视图：首页 ================= -->
+<section class="view" id="view-home">
+  <!-- hero -->
+  <div class="hero">
+    <div class="hero-bg"><video src="https://aka.doubaocdn.com/s/0xEwj7fJg4" autoplay muted loop playsinline preload="auto"></video></div>
+    <div class="wrap hero-inner">
+      <p class="hero-kicker">North American Athletic Aesthetic · Est. 2025 Hangzhou</p>
+      <h1 class="hero-title">LUMI<span class="accent">N</span>ARA</h1>
+      <p class="hero-tag">寓意为光 · 成为每一个我</p>
+      <p class="hero-desc">北美简约运动美学与东方剪裁工艺的融合之作，打破运动服饰与日常穿搭的边界，为注重质感与氛围的都市人群，打造全天候可穿的轻奢运动单品。</p>
+      <div class="hero-actions">
+        <a href="#products" class="btn btn-solid" data-nav>探索系列</a>
+        <a href="#about" class="btn btn-ghost" data-nav>了解品牌</a>
+      </div>
+      <div class="hero-meta">
+        <div class="m"><b>2025</b><span>诞生于杭州</span></div>
+        <div class="m"><b>4+</b><span>核心品类</span></div>
+        <div class="m"><b>全天候</b><span>多元场景穿着</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- manifesto -->
+  <div class="manifesto">
+    <div class="glow"></div>
+    <div class="wrap">
+      <div class="eyebrow">品牌理念 · Philosophy</div>
+      <p class="manifesto-quote">我们相信，运动服饰不该是妥协的选择。<br />它以利落线条与精致工艺，让<em>审美、品质与实穿性</em>真正达成平衡。</p>
+      <p class="manifesto-body">Luminara 汲取北美运动文化灵感，拒绝过度浮夸的标识化设计，聚焦版型、面料与穿着体验，为热爱运动、追求穿搭格调的年轻群体，传递自在舒展、不刻意张扬的生活态度。</p>
+    </div>
+  </div>
+
+  <!-- categories -->
+  <div class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">产品系列 · Collections</div>
+          <h2 class="sec-title" style="margin-top:20px">四大核心品类</h2>
+        </div>
+        <a href="#products" class="btn btn-ghost" data-nav>查看全部 →</a>
+      </div>
+      <div class="cat-grid">
+        <a class="cat-card" href="#products?cat=second" data-nav>
+          <div class="cat-img"><img src="https://aka.doubaocdn.com/s/1jsZd7Ib7q" alt="第二肌肤系列" /></div>
+          <div class="cat-body"><h3>第二肌肤系列</h3><p>垂顺亲肤，流体剪裁。</p></div>
+        </a>
+        <a class="cat-card" href="#products?cat=soft" data-nav>
+          <div class="cat-img"><img src="https://aka.doubaocdn.com/s/gMXbGAxsgW" alt="软壳套装" /></div>
+          <div class="cat-body"><h3 class="duo"><span class="en">TRACK SUIT</span><span class="zh">追踪软壳夹克</span></h3><p>软壳套装，高级质感。</p></div>
+        </a>
+        <a class="cat-card zoom3" href="#products?cat=hard" data-nav>
+          <div class="cat-img"><img src="https://aka.doubaocdn.com/s/6opn7dLYqY" alt="硬壳套装" /></div>
+          <div class="cat-body"><h3 class="duo"><span class="en">ALPHA SUIT</span><span class="zh">磐石硬壳冲锋衣</span></h3><p>硬壳套装，磐石科技。</p></div>
+        </a>
+        <a class="cat-card" href="#products?cat=func" data-nav>
+          <div class="cat-img"><img src="https://aka.doubaocdn.com/s/djsGTVUFle" alt="功能性套装" /></div>
+          <div class="cat-body"><h3>功能性套装</h3><p>日常运动，舒适得体。</p></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- pillars -->
+  <div class="section pillars">
+    <div class="wrap">
+      <div class="center" style="margin-bottom:54px">
+        <div class="eyebrow">品牌支撑 · Values</div>
+        <h2 class="sec-title" style="margin-top:20px">我们坚持的三件事</h2>
+      </div>
+      <div class="pillar-grid">
+        <div class="pillar">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3v18M5 7l7-4 7 4M5 17l7 4 7-4"/><path d="M5 7v10M19 7v10"/></svg></div>
+          <h4>设计自主化</h4>
+          <p>注重面料舒适性，功能性，坚持不断设计打磨研发，赋予每一件单品生命。</p>
+          <span class="tag">面料 · 版型 · 研发</span>
+        </div>
+        <div class="pillar">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 20h16M6 20V10M10 20V4M14 20V10M18 20V4"/></svg></div>
+          <h4>克制的高级感</h4>
+          <p>摒弃过度浮夸的标识化设计，以低饱和高级色系与精致细节工艺，塑造不刻意张扬的轻奢质感。</p>
+          <span class="tag">低饱和 · 精致工艺</span>
+        </div>
+        <div class="pillar">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <h4>全天候实穿</h4>
+          <p>适配健身房、户外轻徒步、通勤与日常出街多元场景，让运动与穿搭无缝衔接，自在舒展。</p>
+          <span class="tag">多功能 · 实穿性</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- scenes -->
+  <div class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">我即是我</div>
+          <h2 class="sec-title" style="margin-top:20px">从运动场到日常通勤</h2>
+        </div>
+      </div>
+      <div class="scene-grid">
+        <div class="scene"><img src="https://aka.doubaocdn.com/s/uvhpEH3fhO" alt="健身房与出街穿搭" /></div>
+        <div class="scene"><img src="https://aka.doubaocdn.com/s/PzRaCj9pzY" alt="面料与工艺" /></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 视图：关于我们 ================= -->
+<section class="view" id="view-about">
+  <div class="container">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about">
+          <div class="eyebrow">关于我们 · About</div>
+          <h2 class="sec-title" style="margin-top:22px">LUMINARA，<br />诞生于杭州的轻奢运动新声</h2>
+          <p>Luminara 于 2025 年 2 月诞生于杭州，定位北美风格轻奢运动服饰品牌。品牌融合北美简约运动美学与东方剪裁工艺，打破运动服饰与日常穿搭的边界，主张「轻运动，高质感」的穿着理念，为追求质感、注重穿搭氛围感的都市人群，打造兼顾功能性与高级感的轻奢运动单品。</p>
+          <p>品牌产品覆盖运动外套、机能裤装、健身系列、休闲卫衣等多品类服饰，甄选高垂感、透气亲肤的优质面料，在保障运动所需弹力、耐磨、速干等实用性能的同时，弱化传统运动服的厚重感，以利落线条、低饱和高级色系、精致细节工艺塑造轻奢质感。</p>
+          <div class="facts">
+            <div class="fact"><b>2025</b><span>品牌成立年份</span></div>
+            <div class="fact"><b>杭州</b><span>品牌诞生地</span></div>
+            <div class="fact"><b>4+</b><span>核心品类</span></div>
+          </div>
+        </div>
+        <div class="about-visual">
+          <img src="https://aka.doubaocdn.com/s/rC9tImLfAi" alt="Luminara 面料与剪裁工艺" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:40px">
+    <div class="wrap">
+      <div class="about-grid" style="align-items:start">
+        <div>
+          <div class="eyebrow">设计哲学 · Design</div>
+          <h2 class="sec-title" style="margin-top:22px">东方剪裁，北美灵魂</h2>
+          <p style="color:var(--ink-dim);font-size:15px;margin-top:20px">依托杭州成熟的服装供应链与设计研发能力，Luminara 坚持设计自主化，汲取北美运动文化灵感，拒绝过度浮夸的标识化设计，聚焦版型、面料与穿着体验，平衡审美、品质与实穿性。</p>
+          <p style="color:var(--muted);font-size:14px;margin-top:20px">品牌面向热爱运动、追求穿搭格调的年轻群体，传递自在舒展、不刻意张扬的生活态度，打造可全天候穿着的轻奢运动服饰，致力于成为兼具颜值与实力的新锐运动穿搭品牌。</p>
+        </div>
+        <div class="scene" style="min-height:340px">
+          <img src="https://aka.doubaocdn.com/s/qvRVB3UNCi" alt="轻奢运动夹克细节" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 视图：产品展示 ================= -->
+<section class="view" id="view-products">
+  <div class="container">
+    <div class="wrap">
+      <div class="section-head" style="align-items:center">
+        <div>
+          <div class="eyebrow">产品展示 · Collections</div>
+          <h2 class="sec-title" style="margin-top:20px">Luminara产品系列</h2>
+        </div>
+      </div>
+      <div class="prod-toolbar" id="toolbar">
+        <button class="filter active" data-filter="all">全部</button>
+        <button class="filter" data-filter="second">第二肌肤</button>
+        <button class="filter" data-filter="white">白纱套装</button>
+        <button class="filter" data-filter="soft">软壳套装</button>
+        <button class="filter" data-filter="hard">硬壳套装</button>
+        <button class="filter" data-filter="func">功能性套装</button>
+      </div>
+      <div class="prod-grid" id="prodGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 视图：联系我们 ================= -->
+<section class="view" id="view-contact">
+  <div class="container">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">联系我们 · Contact</div>
+          <h2 class="sec-title" style="margin-top:20px">与我们保持联系</h2>
+          <p class="sec-sub">无论是合作咨询、品牌与产品问题，还是想了解更多 Luminara 的动态，欢迎随时联系我们。</p>
+        </div>
+      </div>
+      <div class="contact-grid">
+        <div>
+          <div class="contact-item">
+            <div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></div>
+            <div><h4>邮箱</h4><p><a href="mailto:hello@luminara.cn">hello@luminara.cn</a></p></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+            <div><h4>品牌总部</h4><p>中国 · 浙江 · 杭州</p></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></div>
+            <div><h4>商务合作</h4><p><a href="tel:13730994225">13730994225</a></p></div>
+          </div>
+        </div>
+        <form class="form-card" id="contactForm">
+          <h3>给我们留言</h3>
+          <p class="note">填写以下信息，我们会尽快与你取得联系。</p>
+          <div class="field">
+            <label for="f-name">姓名</label>
+            <input id="f-name" name="name" type="text" required placeholder="你的称呼" />
+          </div>
+          <div class="field">
+            <label for="f-mail">邮箱</label>
+            <input id="f-mail" name="email" type="email" required placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label for="f-type">咨询类型</label>
+            <select id="f-type" name="type">
+              <option>产品咨询</option>
+              <option>合作洽谈</option>
+              <option>品牌合作</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-msg">留言内容</label>
+            <textarea id="f-msg" name="message" required placeholder="想了解什么？"></textarea>
+          </div>
+          <button type="submit" class="btn btn-solid submit">发送留言</button>
+          <p class="form-note">提交即表示同意我们与你取得联系。</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="fbrand">LUMI<span style="color:var(--bronze)">N</span>ARA</div>
+        <p class="fdesc">运动性兼顾高质感。北美简约运动美学与东方剪裁工艺的融合之作，为都市人群打造兼顾功能性与高级感的轻奢运动单品。</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h5>导航</h5>
+          <a href="#home" data-nav>首页</a>
+          <a href="#about" data-nav>关于我们</a>
+          <a href="#products" data-nav>产品展示</a>
+          <a href="#contact" data-nav>联系我们</a>
+        </div>
+        <div class="foot-col">
+          <h5>系列</h5>
+          <a href="#products" data-nav>运动外套</a>
+          <a href="#products" data-nav>机能裤装</a>
+          <a href="#products" data-nav>健身系列</a>
+          <a href="#products" data-nav>休闲卫衣</a>
+        </div>
+        <div class="foot-col">
+          <h5>联系</h5>
+          <a href="mailto:hello@luminara.cn">hello@luminara.cn</a>
+          <a href="mailto:bd@luminara.cn">bd@luminara.cn</a>
+          <a href="#contact" data-nav>杭州 · 中国</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 LUMINARA · 轻运动，高质感</p>
+      <div class="social">
+        <a href="#" aria-label="微博"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="12" r="6"/><path d="M20 4l-2 3M6 21l2-3"/></svg></a>
+        <a href="#" aria-label="小红书"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9.5h6M9 9.5v5M12 9.5v5"/></svg></a>
+        <a href="#" aria-label="微信"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 5a7 7 0 0 0 0 14l-2 1 2-1.2A7 7 0 1 1 8 5Z"/><path d="M9 10.5h.01M13 10.5h.01M9 13.5h.01M13 13.5h.01"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">感谢你的留言，我们会尽快回复。</div>
+
+<script>
+(function(){
+  /* ===== 路由 ===== */
+  var views = ['home','about','products','contact'];
+  var current = 'home';
+  var anchors = document.querySelectorAll('[data-link]');
+
+  function setActive(link){
+    anchors.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-link')===link); });
+    var mob = document.querySelectorAll('.mobile-menu [data-link]');
+    mob.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-link')===link); });
+  }
+
+  function show(id){
+    if(views.indexOf(id) < 0) id = 'home';
+    current = id;
+    views.forEach(function(v){
+      var el = document.getElementById('view-'+v);
+      el.classList.toggle('active', v===id);
+    });
+    setActive(id);
+    window.scrollTo(0,0);
+    // 进入产品展示页时，根据 URL 参数激活对应品类筛选
+    if(id === 'products') applyCatFromURL();
+  }
+
+  /* 从当前 URL 读取 cat 参数并激活产品页筛选；无参数则保持默认（全部） */
+  function applyCatFromURL(){
+    var toolbarEl = document.getElementById('toolbar');
+    if(!toolbarEl) return;
+    var h = location.hash.replace('#','');
+    var parts = h.split('?');
+    var cat = null;
+    if(parts[1]){
+      var params = {};
+      parts[1].split('&').forEach(function(kv){
+        var pair = kv.split('=');
+        params[pair[0]] = pair[1];
+      });
+      cat = params.cat || null;
+    }
+    var btn = cat ? toolbarEl.querySelector('.filter[data-filter="'+cat+'"]') : null;
+    if(btn){
+      toolbarEl.querySelectorAll('.filter').forEach(function(f){ f.classList.remove('active'); });
+      btn.classList.add('active');
+      renderProducts(cat);
+    } else {
+      // 无有效 cat 参数，重置为「全部」
+      var allBtn = toolbarEl.querySelector('.filter[data-filter="all"]');
+      toolbarEl.querySelectorAll('.filter').forEach(function(f){ f.classList.remove('active'); });
+      if(allBtn) allBtn.classList.add('active');
+      renderProducts('all');
+    }
+  }
+
+  function onHash(){
+    var h = location.hash.replace('#','');
+    var parts = h.split('?');
+    var view = parts[0];
+    show(view);
+    closeMenu();
+  }
+  window.addEventListener('hashchange', onHash);
+
+  /* ===== 移动菜单 ===== */
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('mobileMenu');
+  function closeMenu(){ burger.classList.remove('open'); menu.classList.remove('open'); }
+  burger.addEventListener('click', function(){ burger.classList.toggle('open'); menu.classList.toggle('open'); });
+
+  /* 产品数据 */
+  var products = [
+    {name:'第二肌肤·短袖', cat:'second', sub:'tee', catName:'第二肌肤',
+     img:'https://aka.doubaocdn.com/s/2vuT9mhYZ6',
+     desc:'垂顺亲肤短袖，流体剪裁贴合身形，透气舒适。',
+     tags:['短袖','垂顺','亲肤'], price:'¥ 299'},
+    {name:'第二肌肤·半拉链', cat:'second', sub:'halfzip', catName:'第二肌肤',
+     img:'https://aka.doubaocdn.com/s/F4Talu9Z35',
+     desc:'半拉链设计，垂坠面料，内搭外穿皆宜。',
+     tags:['半拉链','垂坠','层次感'], price:'¥ 399'},
+    {name:'第二肌肤·开衫', cat:'second', sub:'cardigan', catName:'第二肌肤',
+     img:'https://aka.doubaocdn.com/s/ET10uPaM5Q',
+     desc:'利落开衫剪裁，高垂感面料，通勤出街自如。',
+     tags:['开衫','利落','垂感'], price:'¥ 399'},
+    {name:'第二肌肤·长裤', cat:'second', sub:'pants', catName:'第二肌肤',
+     img:'https://aka.doubaocdn.com/s/puzIYMgpid',
+     desc:'垂顺亲肤长裤，流体剪裁，弹力耐磨，舒适自如。',
+     tags:['长裤','垂坠','弹力'], price:'¥ 399'},
+    {name:'第二肌肤·短裤', cat:'second', sub:'shorts', catName:'第二肌肤',
+     img:'https://aka.doubaocdn.com/s/apVYhlslPa',
+     desc:'清爽亲肤短裤，轻薄透气，运动出街皆宜。',
+     tags:['短裤','轻薄','透气'], price:'¥ 299'},
+    {name:'白沙·长袖', cat:'white', sub:'longtop', catName:'白纱套装',
+     img:'https://aka.doubaocdn.com/s/dPdmn8sUcc',
+     desc:'轻透白纱长袖，垂顺剪裁，清爽利落，日常出街舒适有型。',
+     tags:['长袖','轻透','垂顺'], price:'¥ 499'},
+    {name:'白沙·短袖', cat:'white', sub:'shirt', catName:'白纱套装',
+     img:'https://aka.doubaocdn.com/s/z31PSWsqYU',
+     desc:'透气亲肤白纱短袖，利落线条，清爽日常。',
+     tags:['短袖','透气','亲肤'], price:'¥ 399'},
+    {name:'白沙·长裤', cat:'white', sub:'longpants', catName:'白纱套装',
+     img:'https://aka.doubaocdn.com/s/vwle7qG644',
+     desc:'垂顺白纱长裤，流畅剪裁，舒适有型，通勤出街皆宜。',
+     tags:['长裤','垂顺','利落'], price:'¥ 499'},
+    {name:'白沙·短裤', cat:'white', sub:'shorts', catName:'白纱套装',
+     img:'https://aka.doubaocdn.com/s/3ZNZSKPCzb',
+     desc:'清爽白纱短裤，轻薄透气，运动与日常皆宜。',
+     tags:['短裤','轻薄','透气'], price:'¥ 399'},
+    {name:'Track Suit 追踪软壳夹克', cat:'soft', catName:'软壳套装',
+     img:'https://aka.doubaocdn.com/s/JbCqtdZdfF',
+     desc:'高质感软壳面料，高级质感与实穿平衡，适配通勤、户外轻徒步与日常。',
+     tags:['软壳','高级质感','多功能'], price:'¥ 1880'},
+    {name:'Alpha Suit 磐石硬壳冲锋衣', cat:'hard', catName:'硬壳套装',
+     img:'https://aka.doubaocdn.com/s/oWwbsKsGpz',
+     desc:'磐石科技硬壳面料，防风耐磨，利落剪裁，应对多变天气与高强度户外。',
+     tags:['硬壳','磐石科技','防风耐磨'], price:'¥ 2280'},
+    {name:'功能性·长袖', cat:'func', sub:'longsleeve', catName:'功能性套装',
+     img:'https://aka.doubaocdn.com/s/3U1tsoSHUu',
+     desc:'功能性白色开胸长袖，舒适透气，日常运动得体有型。',
+     tags:['长袖','白色','开胸'], price:'¥ 698'},
+    {name:'功能性·背心', cat:'func', sub:'vest', catName:'功能性套装',
+     img:'https://aka.doubaocdn.com/s/3T0dfbsUVy',
+     desc:'功能性白色背心，速干透气，运动中保持清爽舒适。',
+     tags:['背心','速干','透气'], price:'¥ 498'}
+  ];
+
+  var grid = document.getElementById('prodGrid');
+
+  function renderProducts(filter){
+    var html = '';
+    products.forEach(function(p, i){
+      if(filter !== 'all' && p.cat !== filter) return;
+      html +=
+        '<article class="prod">' +
+          '<div class="shot"><img src="'+p.img+'" alt="'+p.name+'" /></div>' +
+          '<div class="info">' +
+            '<div class="cat">'+p.catName+' · 0'+(i+1)+'</div>' +
+            '<h3>'+p.name+'</h3>' +
+            '<p>'+p.desc+'</p>' +
+            '<div class="tags">'+p.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('')+'</div>' +
+            '<div class="price">'+p.price+'<em>参考价</em></div>' +
+          '</div>' +
+        '</article>';
+    });
+    grid.innerHTML = html || '<p style="color:var(--muted)">该分类暂无单品。</p>';
+  }
+
+  renderProducts('all');
+
+  var toolbar = document.getElementById('toolbar');
+  toolbar.addEventListener('click', function(e){
+    var btn = e.target.closest('.filter');
+    if(!btn) return;
+    toolbar.querySelectorAll('.filter').forEach(function(f){ f.classList.remove('active'); });
+    btn.classList.add('active');
+    var f = btn.getAttribute('data-filter');
+    renderProducts(f);
+    // 若地址栏仍带着 ?cat= 参数，点选筛选后清除，避免刷新时重复跳转
+    if(location.hash.indexOf('?') !== -1){
+      history.replaceState(null, '', '#products');
+    }
+  });
+
+  /* 初始化当前视图（需在 toolbar 定义之后调用，show→applyCatFromURL 才能激活品类筛选） */
+  onHash();
+
+  /* ===== 表单 ===== */
+  var form = document.getElementById('contactForm');
+  var toast = document.getElementById('toast');
+  var toastTimer;
+  function showToast(msg){
+    toast.textContent = msg || '感谢你的留言，我们会尽快回复。';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3000);
+  }
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('f-name').value.trim();
+    var mail = document.getElementById('f-mail').value.trim();
+    var msg  = document.getElementById('f-msg').value.trim();
+    if(!name || !mail || !msg){ showToast('请填写完整信息后再提交。'); return; }
+    form.reset();
+    showToast('感谢你的留言，我们会尽快回复。');
+  });
+})();
+</script>
+</body>
+</html>
